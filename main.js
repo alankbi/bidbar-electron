@@ -1,10 +1,18 @@
-const {app, BrowserWindow, ipcMain, Tray, nativeImage} = require('electron');
+const {app, BrowserWindow, globalShortcut, ipcMain, Tray, nativeImage} = require('electron');
 const path = require('path');
 
 let tray;
 let window;
+let webContents;
 
 app.on('ready', () => {
+  initializeDisplays();
+  registerShortcuts();
+
+  window.webContents.openDevTools(); // DEBUGGER
+});
+
+const initializeDisplays = () => {
   window = new BrowserWindow({
     width: 400,
     height: 600,
@@ -13,7 +21,7 @@ app.on('ready', () => {
     resizable: false,
   });
   window.loadURL('file://' + path.join(__dirname, 'index.html'));
-  window.webContents.openDevTools(); // DEBUGGER
+  webContents = window.webContents;
 
   const icon = nativeImage.createFromPath('./assets/logo.png');
   tray = new Tray(icon);
@@ -21,7 +29,23 @@ app.on('ready', () => {
   tray.on('click', (event) => {
     toggleWindow();
   });
-});
+};
+
+const registerShortcuts = () => {
+  for (let i = 0; i < 5; i++) {
+    globalShortcut.register('Shift+CommandOrControl+' + i, () => {
+      webContents.send('keyboard-shortcut-triggered', {'scriptNumber': i});
+    });
+  }
+};
+
+const toggleWindow = () => {
+  if (window.isVisible()) {
+    window.hide();
+  } else {
+    showWindow();
+  }
+};
 
 const showWindow = () => {
   const trayPos = tray.getBounds();
@@ -39,14 +63,6 @@ const showWindow = () => {
   window.setPosition(x, y, false);
   window.show();
   window.focus();
-};
-
-const toggleWindow = () => {
-  if (window.isVisible()) {
-    window.hide();
-  } else {
-    showWindow();
-  }
 };
 
 ipcMain.on('show-window', () => {
