@@ -13,6 +13,7 @@ app.on('ready', () => {
     resizable: false,
   });
   window.loadURL('file://' + path.join(__dirname, 'index.html'));
+  window.webContents.openDevTools(); // DEBUGGER
 
   const icon = nativeImage.createFromPath('./assets/logo.png');
   tray = new Tray(icon);

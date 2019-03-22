@@ -8,4 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   n.onclick = () => {
     ipcRenderer.send('show-window');
   };
+
+  for (let i = 0; i < 5; i++) {
+    const container = document.getElementById('container');
+    container.innerHTML += `<div class="script-${i}">Script ${i}</div>`;
+  }
 });
