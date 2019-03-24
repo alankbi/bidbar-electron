@@ -32,8 +32,8 @@ const initializeDisplays = () => {
 };
 
 const registerShortcuts = () => {
-  for (let i = 0; i < 5; i++) {
-    globalShortcut.register('Shift+CommandOrControl+' + i, () => {
+  for (let i = 1; i <= 5; i++) {
+    globalShortcut.register('Shift+CommandOrControl+Alt+' + i, () => {
       webContents.send('keyboard-shortcut-triggered', {'scriptNumber': i});
     });
   }

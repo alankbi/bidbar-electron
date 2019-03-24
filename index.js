@@ -2,7 +2,7 @@ const {ipcRenderer} = require('electron');
 
 document.addEventListener('DOMContentLoaded', () => {
   // Add script items to page
-  for (let i = 0; i < 5; i++) {
+  for (let i = 1; i <= 5; i++) {
     const container = document.getElementById('container');
     container.innerHTML += createScriptItemHTML(i);
   }
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scriptItems = document.querySelectorAll('.script-button');
   scriptItems.forEach((item, index) => {
     item.addEventListener('click', () => {
-      scriptItemClicked(index);
+      scriptItemClicked(index + 1);
     });
   });
 });
