@@ -20,7 +20,7 @@ const initializeDisplays = () => {
     frame: false,
     resizable: false,
   });
-  window.loadURL('file://' + path.join(__dirname, 'index.html'));
+  window.loadURL('file://' + path.join(__dirname, 'html/index.html'));
   webContents = window.webContents;
 
   const icon = nativeImage.createFromPath('./assets/logo.png');
