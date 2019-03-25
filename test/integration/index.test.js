@@ -6,7 +6,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {app} = require(path.join(__dirname, './application.js'));
+const {app} = require('./application.js');
 // const appPath = path.join(__dirname, '../../');
 // let electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
 // if (process.platform === 'win32') {
