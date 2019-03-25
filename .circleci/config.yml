@@ -15,6 +15,7 @@ jobs:
             - v1-dependencies-
 
       - run: npm install
+      - run: apt-get install libgtk2.0-0
 
       - save_cache:
           paths:
