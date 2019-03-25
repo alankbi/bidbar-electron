@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "electron-mocha test/**/*.test.js"
+    "test": "mocha test/**/*.test.js"
   },
   "author": "Alan Bi"
 }
