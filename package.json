@@ -7,13 +7,19 @@
     "npm": "^6.9.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "electron-packager": "^8.0.0",
     "electron-prebuilt": "^1.4.1",
     "eslint": "^5.15.3",
-    "eslint-config-google": "^0.12.0"
+    "eslint-config-google": "^0.12.0",
+    "mocha": "^6.0.2",
+    "sinon": "^7.3.0",
+    "spectron": "^5.0.0"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "mocha"
   },
   "author": "Alan Bi"
 }
