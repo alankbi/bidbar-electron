@@ -1,4 +1,5 @@
-const {app, BrowserWindow, globalShortcut, ipcMain, Tray, nativeImage} = require('electron');
+const {app, BrowserWindow, globalShortcut,
+  ipcMain, Tray, nativeImage} = require('electron');
 const path = require('path');
 
 let tray;
@@ -68,3 +69,22 @@ const showWindow = () => {
 ipcMain.on('show-window', () => {
   showWindow();
 });
+
+// For testing purposes
+const getTray = () => {
+  return tray;
+};
+
+// For testing purposes
+const getWindow = () => {
+  return window;
+};
+
+module.exports = {
+  'app': app,
+  'initializeDisplays': initializeDisplays,
+  'registerShortcuts': registerShortcuts,
+  'toggleWindow': toggleWindow,
+  'getTray': getTray,
+  'getWindow': getWindow,
+};

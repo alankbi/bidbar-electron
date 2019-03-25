@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const createScriptItemHTML = (scriptNumber) => {
   return `<div class="script-${scriptNumber}">
             <p>Script ${scriptNumber}</p>
-            <button class="script-button" id="script-${scriptNumber}-button"></button>
+            <button class="script-button" id="script-${scriptNumber}-button">
+            </button>
           </div>`;
 };
 
