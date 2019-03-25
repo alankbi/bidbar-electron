@@ -31,6 +31,8 @@ describe('Menu bar window', () => {
   });
 
   it('Menu should be open', () => {
-    expect(app.browserWindow.isVisible()).eventually.to.be.true;
+    app.client.waitUntilWindowLoaded().then(() => {
+      expect(app.browserWindow.isVisible()).eventually.to.be.true;
+    });
   });
 });
