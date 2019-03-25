@@ -6,16 +6,17 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const appPath = path.join(__dirname, '../../');
-let electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
-if (process.platform === 'win32') {
-  electronPath += '.cmd';
-}
+const {app} = require('../application.js');
+// const appPath = path.join(__dirname, '../../');
+// let electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
+// if (process.platform === 'win32') {
+//   electronPath += '.cmd';
+// }
 
-const app = new Application({
-  path: electronPath,
-  args: [appPath],
-});
+// const app = new Application({
+//   path: electronPath,
+//   args: [appPath],
+// });
 
 describe('Menu bar window', () => {
   beforeEach(() => {
@@ -31,6 +32,8 @@ describe('Menu bar window', () => {
   });
 
   it('Menu should be open', () => {
-    expect(app.browserWindow.isVisible()).eventually.to.be.true;
+    app.client.waitUntilWindowLoaded().then(() => {
+      expect(app.browserWindow.isVisible()).eventually.to.be.true;
+    });
   });
 });

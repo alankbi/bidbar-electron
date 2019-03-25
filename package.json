@@ -4,6 +4,7 @@
   "description": "A menu bar app that allows you to run custom scripts with just a few clicks.",
   "main": "main.js",
   "dependencies": {
+    "electron": "^4.1.1",
     "npm": "^6.9.0"
   },
   "devDependencies": {
@@ -20,7 +21,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "electron-mocha test/**/*.test.js"
+    "test": "electron-mocha --timeout 4000 test/**/*.test.js"
   },
   "author": "Alan Bi"
 }
