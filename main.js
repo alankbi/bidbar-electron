@@ -10,7 +10,9 @@ app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
 
-  window.webContents.openDevTools(); // DEBUGGER
+  if (process.env.RUNNING_IN_SPECTRON === 'test') {
+    window.webContents.openDevTools();
+  }
 });
 
 const initializeDisplays = () => {
