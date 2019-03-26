@@ -14,7 +14,8 @@ describe('Main script', () => {
 
   it('Window should be toggled open', () => {
     main.initializeDisplays();
-    main.toggleWindow();
+    main.showWindow();
+
     expect(main.getWindow().isVisible()).to.be.true;
   });
 });

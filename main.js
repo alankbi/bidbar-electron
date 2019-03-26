@@ -86,6 +86,7 @@ module.exports = {
   'app': app,
   'initializeDisplays': initializeDisplays,
   'registerShortcuts': registerShortcuts,
+  'showWindow': showWindow,
   'toggleWindow': toggleWindow,
   'getTray': getTray,
   'getWindow': getWindow,

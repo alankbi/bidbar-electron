@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "electron-mocha --timeout 4000 test/**/*.test.js"
+    "test": "electron-mocha test/**/*.test.js"
   },
   "author": "Alan Bi"
 }
