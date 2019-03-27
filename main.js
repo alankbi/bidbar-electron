@@ -10,9 +10,7 @@ app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
 
-  if (process.env.RUNNING_IN_SPECTRON === 'test') {
-    window.webContents.openDevTools();
-  }
+  window.webContents.openDevTools(); // DEBUGGER
 });
 
 const initializeDisplays = () => {
@@ -22,6 +20,9 @@ const initializeDisplays = () => {
     show: false,
     frame: false,
     resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
   window.loadURL('file://' + path.join(__dirname, 'html/index.html'));
   webContents = window.webContents;
