@@ -4,8 +4,8 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {app} = require('../application.js');
-const main = require('../../main');
+const {app} = require('./application.js');
+const main = require('../main');
 
 describe('Main script', () => {
   beforeEach(() => {
@@ -16,9 +16,13 @@ describe('Main script', () => {
     return app.stop();
   });
 
-  it('Test that the main window is opened', () => {
-    expect(app.client.waitUntilWindowLoaded().getWindowCount())
-        .to.eventually.equal(1);
+  it('Ensure display is initialized', () => {
+    expect(app.browserWindow.isVisible()).to.eventually.be.false;
+  });
+
+  it('Window should be toggled open', () => {
+    app.electron.ipcRenderer.send('show-window');
+    expect(app.browserWindow.isVisible()).to.eventually.be.true;
   });
 
   it('Menu should be centered with tray icon', () => {
@@ -30,16 +34,5 @@ describe('Main script', () => {
 
     expect(Math.round(window.x + window.width / 2) ===
       Math.round(tray.x + tray.width / 2)).to.be.true;
-  });
-
-  it('Keyboard shortcut should trigger script run', () => {
-    app.client.waitUntilWindowLoaded().then(() => {
-      app.browserWindow.webContents.sendInputEvent({
-        type: 'keyDown',
-        keyCode: '\u0008',
-      });
-
-      expect(true).to.be.true;
-    });
   });
 });

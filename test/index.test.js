@@ -4,7 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {app} = require('../application.js');
+const {app} = require('./application.js');
 
 describe('Menu bar window', () => {
   beforeEach(() => {
@@ -20,8 +20,6 @@ describe('Menu bar window', () => {
   });
 
   it('Menu should be open', () => {
-    app.client.waitUntilWindowLoaded().then(() => {
-      expect(app.browserWindow.isVisible()).eventually.to.be.true;
-    });
+    expect(app.browserWindow.isVisible()).to.eventually.be.true;
   });
 });
