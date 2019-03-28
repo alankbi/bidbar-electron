@@ -10,7 +10,7 @@ app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
 
-  window.webContents.openDevTools(); // DEBUGGER
+  // window.webContents.openDevTools(); // DEBUGGER
 });
 
 const initializeDisplays = () => {
@@ -73,15 +73,18 @@ ipcMain.on('show-window', () => {
   showWindow();
 });
 
-// For testing purposes
+// Everything below this is for testing purposes
 const getTray = () => {
   return tray;
 };
 
-// For testing purposes
 const getWindow = () => {
   return window;
 };
+
+ipcMain.on('test-notification-clicked', () => {
+  window.webContents.send('test-notification-clicked');
+});
 
 module.exports = {
   'app': app,

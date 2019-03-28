@@ -7,7 +7,7 @@ const expect = chai.expect;
 const {app} = require('./application.js');
 const main = require('../main');
 
-describe('Main script', () => {
+describe('Main process', () => {
   beforeEach(() => {
     return app.start();
   });

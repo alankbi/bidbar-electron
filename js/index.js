@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 const createScriptItemHTML = (scriptNumber) => {
   return `<div class="script-${scriptNumber}">
             <p>Script ${scriptNumber}</p>
-            <button class="script-button" id="script-${scriptNumber}-button">
+            <button class="script-button" id="script-button-${scriptNumber}">
             </button>
           </div>`;
 };
 
 const scriptItemClicked = (scriptNumber) => {
-  exec('ls', (err, stdout, stderr) => {
+  exec('echo hello', (err, stdout, stderr) => {
     if (err) {
       return;
     }
@@ -47,7 +47,7 @@ const scriptItemClicked = (scriptNumber) => {
     });
     window.loadURL('file://' + path.join(__dirname, '../html/output.html'));
 
-    window.webContents.openDevTools(); // DEBUGGER
+    // window.webContents.openDevTools(); // DEBUGGER
 
     window.webContents.on('did-finish-load', () => {
       window.webContents.send('output-data', {
@@ -66,11 +66,19 @@ const createNotification = (scriptNumber) => {
   });
 
   n.onclick = () => {
-    window.show();
-    window.focus();
+    focusOutputWindow();
   };
+};
+
+const focusOutputWindow = () => {
+  window.show();
+  window.focus();
 };
 
 ipcRenderer.on('keyboard-shortcut-triggered', (event, data) => {
   scriptItemClicked(data.scriptNumber);
+});
+
+ipcRenderer.on('test-notification-clicked', () => {
+  focusOutputWindow();
 });
