@@ -2,6 +2,35 @@ const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
 
+const Store = require('electron-store');
+const defaultText = 'Edit this script or add a new one below!';
+const schema = {
+  scripts: {
+    type: 'array',
+    contains: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string',
+        },
+        script: {
+          type: 'string',
+        },
+      },
+      required: ['title', 'script'],
+    },
+    maxItems: 5, // TODO: store paid status and make this infinity if paid
+    default: [{
+      title: defaultText,
+      script: 'echo ' + defaultText,
+    }],
+  },
+};
+const scriptStore = new Store({
+  schema: schema,
+  name: 'scripts',
+});
+
 let window;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,7 +58,8 @@ const createScriptItemHTML = (scriptNumber) => {
 };
 
 const scriptItemClicked = (scriptNumber) => {
-  exec('echo hello', (err, stdout, stderr) => {
+  const command = scriptStore.get('scripts')[0].script;
+  exec(command, (err, stdout, stderr) => {
     if (err) {
       return;
     }
@@ -47,7 +77,7 @@ const scriptItemClicked = (scriptNumber) => {
     });
     window.loadURL('file://' + path.join(__dirname, '../html/output.html'));
 
-    // window.webContents.openDevTools(); // DEBUGGER
+    window.webContents.openDevTools(); // DEBUGGER
 
     window.webContents.on('did-finish-load', () => {
       window.webContents.send('output-data', {
