@@ -9,6 +9,7 @@
     "npm": "^6.9.0"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "electron-mocha": "^6.0.4",
