@@ -1,5 +1,6 @@
 const {app, BrowserWindow, globalShortcut,
   ipcMain, Tray, nativeImage} = require('electron');
+const {scripts} = require('./js/scripts.js');
 const path = require('path');
 
 let tray;
@@ -36,7 +37,7 @@ const initializeDisplays = () => {
 };
 
 const registerShortcuts = () => {
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= scripts.length; i++) {
     globalShortcut.register('Shift+CommandOrControl+Alt+' + i, () => {
       webContents.send('keyboard-shortcut-triggered', {'scriptNumber': i});
     });

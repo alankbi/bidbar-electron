@@ -22,7 +22,8 @@ describe('Output window', () => {
   });
 
   it('Standard output text should be "hello"', () => {
-    expect(app.client.getText('#stdout')).to.eventually.equal('hello');
+    const text = 'Edit this script or add a new one below!';
+    expect(app.client.getText('#stdout')).to.eventually.equal(text);
     expect(app.client.getText('#stderr')).to.eventually.equal('');
   });
 });

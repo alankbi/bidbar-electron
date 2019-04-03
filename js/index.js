@@ -1,41 +1,13 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
-
-const Store = require('electron-store');
-const defaultText = 'Edit this script or add a new one below!';
-const schema = {
-  scripts: {
-    type: 'array',
-    contains: {
-      type: 'object',
-      properties: {
-        title: {
-          type: 'string',
-        },
-        script: {
-          type: 'string',
-        },
-      },
-      required: ['title', 'script'],
-    },
-    maxItems: 5, // TODO: store paid status and make this infinity if paid
-    default: [{
-      title: defaultText,
-      script: 'echo ' + defaultText,
-    }],
-  },
-};
-const scriptStore = new Store({
-  schema: schema,
-  name: 'scripts',
-});
+const {scripts} = require('./scripts.js');
 
 let window;
 
 document.addEventListener('DOMContentLoaded', () => {
   // Add script items to page
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= scripts.length; i++) {
     const container = document.getElementById('container');
     container.innerHTML += createScriptItemHTML(i);
   }
@@ -58,7 +30,14 @@ const createScriptItemHTML = (scriptNumber) => {
 };
 
 const scriptItemClicked = (scriptNumber) => {
-  const command = scriptStore.get('scripts')[0].script;
+  let command;
+  // scriptNumber ranges from 1 -> N, scripts index ranges from 0 -> N-1
+  if (scriptNumber > 0 && scriptNumber <= scripts.length) {
+    command = scripts[scriptNumber - 1].script;
+  } else {
+    command = 'echo "No script currently assigned"';
+  }
+
   exec(command, (err, stdout, stderr) => {
     if (err) {
       return;
