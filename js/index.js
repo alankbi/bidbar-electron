@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add script items to page
   for (let i = 1; i <= scripts.length; i++) {
     const container = document.getElementById('container');
-    container.innerHTML += createScriptItemHTML(i);
+    container.appendChild(createScriptItemHTML(i));
   }
 
   // Add event listener for each script item
@@ -22,11 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const createScriptItemHTML = (scriptNumber) => {
-  return `<div class="script-${scriptNumber}">
-            <p>Script ${scriptNumber}</p>
-            <button class="script-button" id="script-button-${scriptNumber}">
-            </button>
-          </div>`;
+  const scriptItem = document.createElement('div');
+  scriptItem.innerHTML =
+    `<div class="script-${scriptNumber}">
+      <p>${scripts[scriptNumber - 1].title}</p>
+      <button class="script-button" id="script-button-${scriptNumber}">
+      </button>
+    </div>`;
+  return scriptItem.firstChild;
 };
 
 const scriptItemClicked = (scriptNumber) => {
@@ -39,10 +42,6 @@ const scriptItemClicked = (scriptNumber) => {
   }
 
   exec(command, (err, stdout, stderr) => {
-    if (err) {
-      return;
-    }
-
     window = new remote.BrowserWindow({
       parent: remote.getCurrentWindow(),
       width: 500,
@@ -62,6 +61,7 @@ const scriptItemClicked = (scriptNumber) => {
       window.webContents.send('output-data', {
         stdout: stdout,
         stderr: stderr,
+        err: err,
       });
     });
 

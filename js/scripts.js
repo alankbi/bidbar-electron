@@ -29,6 +29,29 @@ const scriptStore = new Store({
 
 const scripts = scriptStore.get('scripts');
 
+const onAddScript = () => {
+  const title = document.getElementById('script-title');
+  const cmd = document.getElementById('script-cmd');
+
+  scriptStore.set('scripts', [
+    ...scripts,
+    {
+      title: title.value,
+      script: cmd.value,
+    },
+  ]);
+
+  title.value = '';
+  cmd.value = '';
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log(scripts);
+  document.getElementById('add-script-button').addEventListener('click', () => {
+    onAddScript();
+  });
+});
+
 module.exports = {
   scripts: scripts,
 };

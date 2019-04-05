@@ -11,7 +11,7 @@ app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
 
-  // window.webContents.openDevTools(); // DEBUGGER
+  window.webContents.openDevTools(); // DEBUGGER
 });
 
 const initializeDisplays = () => {

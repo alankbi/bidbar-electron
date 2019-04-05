@@ -3,10 +3,19 @@
   <head>
     <title>Bidbar</title>
     <script charset="utf-8">require('../js/index.js')</script>
+    <script charset="utf-8">require('../js/scripts.js')</script>
   </head>
   <body>
     <div id="container">
-      <h1>Hello!</h1>
+      <h1>Bidbar</h1>
+      <form class="add-script-form">
+        <p>Add new script</p>
+        <label for="script-title">Script Title</label>
+        <input type="text" name="script-title" id="script-title"><br>
+        <label for="script-cmd">Script Command</label>
+        <input type="text" name="script-cmd" id="script-cmd"><br>
+        <input type="button" name="add-script-button" id="add-script-button" value="Add">
+      </form>
     </div>
   </body>
 </html>
