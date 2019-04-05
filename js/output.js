@@ -1,9 +1,12 @@
 const {ipcRenderer} = require('electron');
 
-let output;
-
 ipcRenderer.on('output-data', (event, data) => {
-  output = data;
-  document.getElementById('stdout').innerText = output.stdout;
-  document.getElementById('err').innerText = output.err;
+  if (data.stdout) {
+    document.getElementById('stdout').innerText = data.stdout;
+    document.getElementById('stdout-header').style.display = 'initial';
+  }
+  if (data.err) {
+    document.getElementById('err').innerText = data.err;
+    document.getElementById('err-header').style.display = 'initial';
+  }
 });
