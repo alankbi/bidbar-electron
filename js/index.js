@@ -1,7 +1,7 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
-const {scripts, scriptStore} = require('./scripts.js');
+const {scripts, scriptStore, scriptLimit} = require('./scripts.js');
 
 let window;
 
@@ -14,8 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('add-script-button').addEventListener('click', () => {
-    onAddScript();
-    container.appendChild(createScriptItemHTML(scripts.length));
+    const success = onAddScript();
+    if (success) {
+      container.appendChild(createScriptItemHTML(scripts.length));
+    }
   });
 });
 
@@ -27,7 +29,7 @@ const createScriptItemHTML = (scriptNumber) => {
       <h4>${scripts[scriptNumber].title}</h4>
       <p>${scripts[scriptNumber].script}</p>
       <button class="script-button" value="Run" 
-        id="script-button-${scriptNumber}"></button>
+        id="script-button-${scriptNumber}">Run</button>
     </div>`;
 
   scriptItem = scriptItem.firstChild;
@@ -60,7 +62,7 @@ const scriptItemClicked = (scriptNumber) => {
     });
     window.loadURL('file://' + path.join(__dirname, '../html/output.html'));
 
-    // window.webContents.openDevTools(); // DEBUGGER
+    window.webContents.openDevTools(); // DEBUGGER
 
     window.webContents.on('did-finish-load', () => {
       window.webContents.send('output-data', {
@@ -83,7 +85,17 @@ const createNotification = (scriptNumber) => {
   };
 };
 
+// Returns whether a new script item was successfully created
 const onAddScript = () => {
+  if (scripts.length >= scriptLimit) {
+    const errorMessage = document.getElementById('add-script-error');
+    errorMessage.style.display = 'initial';
+    setTimeout(() => {
+      errorMessage.style.display = 'none';
+    }, 5000);
+    return false;
+  }
+
   const title = document.getElementById('script-title');
   const cmd = document.getElementById('script-cmd');
 
@@ -97,6 +109,8 @@ const onAddScript = () => {
 
   title.value = '';
   cmd.value = '';
+
+  return true;
 };
 
 const focusOutputWindow = () => {

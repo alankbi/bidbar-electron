@@ -1,5 +1,8 @@
 const Store = require('electron-store');
 const defaultText = '"Edit this script or add a new one below!"';
+
+const scriptLimit = 5; // TODO: store paid status and make this infinity if paid
+
 const schema = {
   scripts: {
     type: 'array',
@@ -15,7 +18,7 @@ const schema = {
       },
       required: ['title', 'script'],
     },
-    maxItems: 5, // TODO: store paid status and make this infinity if paid
+    maxItems: scriptLimit,
     default: [{
       title: defaultText,
       script: 'echo ' + defaultText,
@@ -32,4 +35,5 @@ const scripts = scriptStore.get('scripts');
 module.exports = {
   scriptStore: scriptStore,
   scripts: scripts,
+  scriptLimit: scriptLimit,
 };
