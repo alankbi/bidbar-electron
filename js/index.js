@@ -11,12 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add script items to page
   for (let i = 0; i < scripts.length; i++) {
     container.appendChild(createScriptItemHTML(i));
+    attachScriptsToItem(i);
   }
 
   document.getElementById('add-script-button').addEventListener('click', () => {
     const success = onAddScript();
     if (success) {
       container.appendChild(createScriptItemHTML(scripts.length));
+      attachScriptsToItem(scripts.length);
     }
   });
 });
@@ -24,22 +26,45 @@ document.addEventListener('DOMContentLoaded', () => {
 const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
   scriptItem.innerHTML =
-    `<div class="script-${scriptNumber}">
-      <h3>Script ${scriptNumber + 1}</h3>
-      <h4>${scripts[scriptNumber].title}</h4>
-      <p>${scripts[scriptNumber].script}</p>
-      <button class="script-button" value="Run" 
-        id="script-button-${scriptNumber}">Run</button>
+    `<div class="script-container">
+      <h3 id="script-${scriptNumber}-header">Script ${scriptNumber + 1}</h3>
+
+      <input type="text" id="script-${scriptNumber}-title" 
+        value="${scripts[scriptNumber].title}" readonly>
+      <!--<h4>${scripts[scriptNumber].title}</h4>-->
+      
+      <input type="text" id="script-${scriptNumber}-command" 
+        value="${scripts[scriptNumber].script}" readonly>
+      <!--<p>${scripts[scriptNumber].script}</p>-->
+
+      <button class="run-script-button"
+        id="run-button-${scriptNumber}">Run</button>
+
+      <button class="edit-script-button"
+        id="edit-button-${scriptNumber}">Edit</button>
+
+      <button class="delete-script-button"
+        id="delete-button-${scriptNumber}">Delete</button>
     </div>`;
 
   scriptItem = scriptItem.firstChild;
-  scriptItem.addEventListener('click', () => {
-    scriptItemClicked(scriptNumber);
-  });
   return scriptItem;
 };
 
-const scriptItemClicked = (scriptNumber) => {
+const attachScriptsToItem = (scriptNumber) => {
+  const suffix = '-button-' + scriptNumber;
+  document.getElementById('run' + suffix).addEventListener('click', () => {
+    runItemClicked(scriptNumber);
+  });
+  document.getElementById('edit' + suffix).addEventListener('click', () => {
+    editItemClicked(scriptNumber);
+  });
+  document.getElementById('delete' + suffix).addEventListener('click', () => {
+    deleteItemClicked(scriptNumber);
+  });
+};
+
+const runItemClicked = (scriptNumber) => {
   let command;
   // scriptNumber ranges from 1 -> N, scripts index ranges from 0 -> N-1
   if (scriptNumber >= 0 && scriptNumber < scripts.length) {
@@ -73,6 +98,14 @@ const scriptItemClicked = (scriptNumber) => {
 
     createNotification(scriptNumber);
   });
+};
+
+const editItemClicked = () => {
+  return;
+};
+
+const deleteItemClicked = () => {
+  return;
 };
 
 const createNotification = (scriptNumber) => {
@@ -119,7 +152,7 @@ const focusOutputWindow = () => {
 };
 
 ipcRenderer.on('keyboard-shortcut-triggered', (event, data) => {
-  scriptItemClicked(data.scriptNumber);
+  runItemClicked(data.scriptNumber);
 });
 
 ipcRenderer.on('test-notification-clicked', () => {
