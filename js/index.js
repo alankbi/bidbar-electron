@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-script-button').addEventListener('click', () => {
     const success = onAddScript();
     if (success) {
-      container.appendChild(createScriptItemHTML(scripts.length));
-      attachScriptsToItem(scripts.length);
+      container.appendChild(createScriptItemHTML(scripts.length - 1));
+      attachScriptsToItem(scripts.length - 1);
     }
   });
 });
@@ -31,11 +31,9 @@ const createScriptItemHTML = (scriptNumber) => {
 
       <input type="text" id="script-${scriptNumber}-title" 
         value="${scripts[scriptNumber].title}" readonly>
-      <!--<h4>${scripts[scriptNumber].title}</h4>-->
       
       <input type="text" id="script-${scriptNumber}-command" 
         value="${scripts[scriptNumber].script}" readonly>
-      <!--<p>${scripts[scriptNumber].script}</p>-->
 
       <button class="run-script-button"
         id="run-button-${scriptNumber}">Run</button>
@@ -66,7 +64,6 @@ const attachScriptsToItem = (scriptNumber) => {
 
 const runItemClicked = (scriptNumber) => {
   let command;
-  // scriptNumber ranges from 1 -> N, scripts index ranges from 0 -> N-1
   if (scriptNumber >= 0 && scriptNumber < scripts.length) {
     command = scripts[scriptNumber].script;
   } else {
@@ -100,11 +97,29 @@ const runItemClicked = (scriptNumber) => {
   });
 };
 
-const editItemClicked = () => {
+const editItemClicked = (scriptNumber) => {
+  const button = document.getElementById('edit-button-' + scriptNumber);
+  const title = document.getElementById('script-' + scriptNumber + '-title');
+  const script = document.getElementById('script-' + scriptNumber + '-command');
+
+  if (button.innerText === 'Edit') {
+    button.innerText = 'Save';
+    title.readOnly = false;
+    script.readOnly = false;
+  } else {
+    button.innerText = 'Edit';
+    scripts[scriptNumber].title = title.value;
+    scripts[scriptNumber].script = script.value;
+    scriptStore.set('scripts', scripts);
+
+    title.readOnly = true;
+    script.readOnly = true;
+  }
+
   return;
 };
 
-const deleteItemClicked = () => {
+const deleteItemClicked = (scriptNumber) => {
   return;
 };
 
@@ -132,13 +147,12 @@ const onAddScript = () => {
   const title = document.getElementById('script-title');
   const cmd = document.getElementById('script-cmd');
 
-  scriptStore.set('scripts', [
-    ...scripts,
-    {
-      title: title.value,
-      script: cmd.value,
-    },
-  ]);
+  scripts.push({
+    title: title.value,
+    script: cmd.value,
+  });
+
+  scriptStore.set('scripts', scripts);
 
   title.value = '';
   cmd.value = '';
