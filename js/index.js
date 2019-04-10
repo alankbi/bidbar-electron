@@ -1,9 +1,5 @@
-const {ipcRenderer, remote} = require('electron');
-const {exec} = require('child_process');
-const path = require('path');
 const {defaultText, scripts, scriptStore, scriptLimit} = require('./data.js');
-
-let window;
+const {runScript} = require('./scriptHelper.js');
 
 const errorMessages = {
   emptyValueError: 'Please enter a value for the script title and command.',
@@ -68,41 +64,8 @@ const attachScriptsToItem = (scriptNumber) => {
   });
 };
 
-// Refactor - window should no longer be needed in index.js
-// runItemClicked will essentially be changed to helper.runScript();
 const runItemClicked = (scriptNumber) => {
-  let command;
-  if (scriptNumber >= 0 && scriptNumber < scripts.length) {
-    command = scripts[scriptNumber].script;
-  } else {
-    command = 'echo "No script currently assigned"';
-  }
-
-  exec(command, (err, stdout, stderr) => {
-    window = new remote.BrowserWindow({
-      parent: remote.getCurrentWindow(),
-      width: 500,
-      height: 400,
-      show: false,
-      center: true,
-      resizable: true,
-      webPreferences: {
-        nodeIntegration: true,
-      },
-    });
-    window.loadURL('file://' + path.join(__dirname, '../html/output.html'));
-
-    window.webContents.openDevTools(); // DEBUGGER
-
-    window.webContents.on('did-finish-load', () => {
-      window.webContents.send('output-data', {
-        stdout: stdout,
-        err: err ? err.message : err,
-      });
-    });
-
-    createNotification(scriptNumber);
-  });
+  runScript(scriptNumber);
 };
 
 const editItemClicked = (scriptNumber) => {
@@ -180,17 +143,6 @@ const setItem = (scriptNumber, titleText, scriptText) => {
   scriptStore.set('scripts', scripts);
 };
 
-// Refactor
-const createNotification = (scriptNumber) => {
-  const n = new Notification('Script ' + (scriptNumber + 1) + ' completed', {
-    body: 'Finished in 1.0 seconds',
-  });
-
-  n.onclick = () => {
-    focusOutputWindow();
-  };
-};
-
 // Returns whether a new script item was successfully created
 const onAddScript = () => {
   if (scripts.length >= scriptLimit) {
@@ -227,19 +179,3 @@ const displayAddError = (errorMessage) => {
     errorElement.style.display = 'none';
   }, 5000);
 };
-
-// Refactor
-const focusOutputWindow = () => {
-  window.show();
-  window.focus();
-};
-
-// Refactor
-ipcRenderer.on('keyboard-shortcut-triggered', (event, data) => {
-  runItemClicked(data.scriptNumber);
-});
-
-// Refactor
-ipcRenderer.on('test-notification-clicked', () => {
-  focusOutputWindow();
-});
