@@ -29,21 +29,22 @@ const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
   scriptItem.innerHTML =
     `<div class="script-container" id="script-container-${scriptNumber}">
-      <h3 id="script-${scriptNumber}-header">Script ${scriptNumber + 1}</h3>
+      <h3 id="script-${scriptNumber}-header" class="script-header">
+        Script ${scriptNumber + 1}</h3>
 
       <input type="text" id="script-${scriptNumber}-title" class="script-title"
         value="${scripts[scriptNumber].title}" readonly>
       
       <textarea id="script-${scriptNumber}-command" class="script-command"
-        readonly>${scripts[scriptNumber].script}</textarea>
+        readonly>${scripts[scriptNumber].script}</textarea><br>
 
-      <button class="run-script-button"
+      <button class="run-script-button button"
         id="run-button-${scriptNumber}">Run</button>
 
-      <button class="edit-script-button"
+      <button class="edit-script-button button"
         id="edit-button-${scriptNumber}">Edit</button>
 
-      <button class="delete-script-button"
+      <button class="delete-script-button button"
         id="delete-button-${scriptNumber}">Delete</button>
     </div>`;
 

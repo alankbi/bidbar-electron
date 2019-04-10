@@ -3,18 +3,17 @@
   <head>
     <title>Bidbar</title>
     <script charset="utf-8">require('../js/index.js')</script>
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
   </head>
   <body>
     <div id="container">
-      <h1>Bidbar</h1>
       <form class="add-script-form">
-        <p>Add new script</p>
-        <label for="script-title">Script Title</label>
-        <input type="text" name="script-title" id="script-title"><br>
-        <label for="script-command">Script Command</label>
+        <label for="script-title">Script Title</label><br>
+        <input type="text" class="script-title" id="script-title"><br>
+        <label for="script-command">Script Command</label><br>
         <!-- <input type="text" name="script-command" id="script-command"><br> -->
         <textarea id="script-command" class="script-command"></textarea>
-        <input type="button" name="add-script-button" id="add-script-button" value="Add">
+        <button class="button" id="add-script-button">Add</button>
         <p id="add-script-error" style="display: none;"></p>
       </form>
     </div>

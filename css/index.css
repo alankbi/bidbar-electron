@@ -1,0 +1,53 @@
+:root {
+  --bg-color: #484848;
+  --light-bg-color: #393939;
+  --text-color: #cbcbcb;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+input[type="text"] {
+  padding: 0 10px;
+}
+
+textarea {
+  padding: 5px 10px;
+}
+
+button {
+  width: 32%;
+  height: 25px;
+  border-radius: 5px;
+}
+
+input[type="text"], textarea, button {
+  background-color: var(--light-bg-color);
+  border: none;
+  color: var(--text-color);
+  font-size: small;
+}
+
+.script-title, .script-command {
+  width: 95%;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.script-title {
+  height: 30px;
+}
+
+.script-command {
+  height: 50px;
+}
+
+.script-header {
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
