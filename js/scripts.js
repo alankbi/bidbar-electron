@@ -33,6 +33,7 @@ const scriptStore = new Store({
 const scripts = scriptStore.get('scripts');
 
 module.exports = {
+  defaultText: defaultText,
   scriptStore: scriptStore,
   scripts: scripts,
   scriptLimit: scriptLimit,

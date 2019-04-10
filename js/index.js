@@ -1,7 +1,7 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
-const {scripts, scriptStore, scriptLimit} = require('./scripts.js');
+const {defaultText, scripts, scriptStore, scriptLimit} = require('./scripts.js');
 
 let window;
 
@@ -117,9 +117,11 @@ const editItemClicked = (scriptNumber) => {
   }
 };
 
-// Possible TODO: replace with template strings to make it more
-// obviously matched with the HTML and thus more readable
 const deleteItemClicked = (scriptNumber) => {
+  if (scripts.length === 1) {
+    setItem(scriptNumber, defaultText, 'echo ' + defaultText);
+    return;
+  }
   scripts.splice(scriptNumber, 1);
   scriptStore.set('scripts', scripts);
 
@@ -153,6 +155,17 @@ const deleteItemClicked = (scriptNumber) => {
 
     attachScriptsToItem(i);
   }
+};
+
+const setItem = (scriptNumber, titleText, scriptText) => {
+  const title = document.getElementById('script-' + scriptNumber + '-title');
+  const script = document.getElementById('script-' + scriptNumber + '-command');
+
+  title.value = titleText;
+  script.value = scriptText;
+  scripts[scriptNumber].title = titleText;
+  scripts[scriptNumber].script = scriptText;
+  scriptStore.set('scripts', scripts);
 };
 
 const createNotification = (scriptNumber) => {
