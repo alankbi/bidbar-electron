@@ -1,9 +1,15 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
-const {defaultText, scripts, scriptStore, scriptLimit} = require('./scripts.js');
+const {defaultText, scripts, scriptStore, scriptLimit} = require('./data.js');
 
 let window;
+
+const errorMessages = {
+  emptyValueError: 'Please enter a value for the script title and command.',
+  scriptLimitError: 'You have reached your limit of 5 scripts. Please ' +
+    'upgrade to the pro version ($5) to gain unlimited scripts.',
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
@@ -62,6 +68,8 @@ const attachScriptsToItem = (scriptNumber) => {
   });
 };
 
+// Refactor - window should no longer be needed in index.js
+// runItemClicked will essentially be changed to helper.runScript();
 const runItemClicked = (scriptNumber) => {
   let command;
   if (scriptNumber >= 0 && scriptNumber < scripts.length) {
@@ -107,6 +115,10 @@ const editItemClicked = (scriptNumber) => {
     title.readOnly = false;
     script.readOnly = false;
   } else {
+    if (!title.value || !script.value) {
+      displayAddError(errorMessages.emptyValueError);
+      return;
+    }
     button.innerText = 'Edit';
     scripts[scriptNumber].title = title.value;
     scripts[scriptNumber].script = script.value;
@@ -168,6 +180,7 @@ const setItem = (scriptNumber, titleText, scriptText) => {
   scriptStore.set('scripts', scripts);
 };
 
+// Refactor
 const createNotification = (scriptNumber) => {
   const n = new Notification('Script ' + (scriptNumber + 1) + ' completed', {
     body: 'Finished in 1.0 seconds',
@@ -181,16 +194,17 @@ const createNotification = (scriptNumber) => {
 // Returns whether a new script item was successfully created
 const onAddScript = () => {
   if (scripts.length >= scriptLimit) {
-    const errorMessage = document.getElementById('add-script-error');
-    errorMessage.style.display = 'initial';
-    setTimeout(() => {
-      errorMessage.style.display = 'none';
-    }, 5000);
+    displayAddError(errorMessages.scriptLimitError);
     return false;
   }
 
   const title = document.getElementById('script-title');
   const cmd = document.getElementById('script-cmd');
+
+  if (!title.value || !cmd.value) {
+    displayAddError(errorMessages.emptyValueError);
+    return false;
+  }
 
   scripts.push({
     title: title.value,
@@ -205,15 +219,27 @@ const onAddScript = () => {
   return true;
 };
 
+const displayAddError = (errorMessage) => {
+  const errorElement = document.getElementById('add-script-error');
+  errorElement.innerHTML = errorMessage;
+  errorElement.style.display = 'initial';
+  setTimeout(() => {
+    errorElement.style.display = 'none';
+  }, 5000);
+};
+
+// Refactor
 const focusOutputWindow = () => {
   window.show();
   window.focus();
 };
 
+// Refactor
 ipcRenderer.on('keyboard-shortcut-triggered', (event, data) => {
   runItemClicked(data.scriptNumber);
 });
 
+// Refactor
 ipcRenderer.on('test-notification-clicked', () => {
   focusOutputWindow();
 });

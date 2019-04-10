@@ -1,6 +1,6 @@
 const {app, BrowserWindow, globalShortcut,
   ipcMain, Tray, nativeImage} = require('electron');
-const {scripts} = require('./js/scripts.js');
+const {scripts} = require('./js/data.js');
 const path = require('path');
 
 let tray;
