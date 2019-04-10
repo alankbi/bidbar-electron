@@ -31,11 +31,11 @@ const createScriptItemHTML = (scriptNumber) => {
     `<div class="script-container" id="script-container-${scriptNumber}">
       <h3 id="script-${scriptNumber}-header">Script ${scriptNumber + 1}</h3>
 
-      <input type="text" id="script-${scriptNumber}-title" 
+      <input type="text" id="script-${scriptNumber}-title" class="script-title"
         value="${scripts[scriptNumber].title}" readonly>
       
-      <input type="text" id="script-${scriptNumber}-command" 
-        value="${scripts[scriptNumber].script}" readonly>
+      <textarea id="script-${scriptNumber}-command" class="script-command"
+        readonly>${scripts[scriptNumber].script}</textarea>
 
       <button class="run-script-button"
         id="run-button-${scriptNumber}">Run</button>
@@ -151,7 +151,7 @@ const onAddScript = () => {
   }
 
   const title = document.getElementById('script-title');
-  const cmd = document.getElementById('script-cmd');
+  const cmd = document.getElementById('script-command');
 
   if (!title.value || !cmd.value) {
     displayAddError(errorMessages.emptyValueError);
