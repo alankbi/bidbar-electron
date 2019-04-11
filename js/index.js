@@ -38,14 +38,16 @@ const createScriptItemHTML = (scriptNumber) => {
       <textarea id="script-${scriptNumber}-command" class="script-command"
         readonly>${scripts[scriptNumber].script}</textarea><br>
 
-      <button class="run-script-button button"
-        id="run-button-${scriptNumber}">Run</button>
+      <div class="script-buttons" id="script-${scriptNumber}-buttons">
+        <button class="run-script-button button"
+          id="run-button-${scriptNumber}">Run</button>
 
-      <button class="edit-script-button button"
-        id="edit-button-${scriptNumber}">Edit</button>
+        <button class="edit-script-button button"
+          id="edit-button-${scriptNumber}">Edit</button>
 
-      <button class="delete-script-button button"
-        id="delete-button-${scriptNumber}">Delete</button>
+        <button class="delete-script-button button"
+          id="delete-button-${scriptNumber}">Delete</button>
+      </div>
     </div>`;
 
   scriptItem = scriptItem.firstChild;
@@ -120,6 +122,9 @@ const deleteItemClicked = (scriptNumber) => {
     const command = document.getElementById(prefix + 'command');
     command.id = 'script-' + i + '-command';
     // command.value = scripts[i].script;
+
+    document.getElementById('script-' + (scriptNumber + 1) + '-buttons').id =
+      'script-' + scriptNumber + '-buttons';
 
     document.getElementById('run' + suffix).id = 'run-button-' + i;
     document.getElementById('edit' + suffix).id = 'edit-button-' + i;

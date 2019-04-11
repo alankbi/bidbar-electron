@@ -1,7 +1,7 @@
 :root {
-  --bg-color: #484848;
-  --light-bg-color: #393939;
-  --text-color: #cbcbcb;
+  --bg-color: #fff;
+  --light-bg-color: #eee;
+  --text-color: #333;
 }
 
 body {

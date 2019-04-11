@@ -16,7 +16,7 @@ app.on('ready', () => {
 
 const initializeDisplays = () => {
   window = new BrowserWindow({
-    width: 400,
+    width: 350,
     height: 600,
     show: false,
     frame: false,
