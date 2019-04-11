@@ -34,18 +34,15 @@ const createScriptItemHTML = (scriptNumber) => {
           ${scriptNumber + 1}. </h3>
 
         <input type="text" id="script-${scriptNumber}-title"
-          class="script-title"value="${scripts[scriptNumber].title}" readonly>
+          class="script-title"value="${scripts[scriptNumber].title}">
         
-        <textarea id="script-${scriptNumber}-command" class="script-command"
-          readonly>${scripts[scriptNumber].script}</textarea><br>
+        <textarea id="script-${scriptNumber}-command" 
+          class="script-command">${scripts[scriptNumber].script}</textarea><br>
       </div>
 
       <div class="script-buttons right" id="script-${scriptNumber}-buttons">
         <button class="run-script-button script-button"
           id="run-button-${scriptNumber}">Run</button><br>
-
-        <!--<button class="edit-script-button script-button"
-          id="edit-button-${scriptNumber}">Edit</button><br>-->
 
         <button class="delete-script-button script-button"
           id="delete-button-${scriptNumber}">Delete</button><br>
@@ -61,9 +58,16 @@ const attachScriptsToItem = (scriptNumber) => {
   document.getElementById('run' + suffix).addEventListener('click', () => {
     runItemClicked(scriptNumber);
   });
-  // document.getElementById('edit' + suffix).addEventListener('click', () => {
-  //   editItemClicked(scriptNumber);
-  // });
+
+  const title = document.getElementById('script-' + scriptNumber + '-title');
+  title.addEventListener('input', () => {
+    itemEdited(scriptNumber);
+  });
+  const cmd = document.getElementById('script-' + scriptNumber + '-command');
+  cmd.addEventListener('input', () => {
+    itemEdited(scriptNumber);
+  });
+
   document.getElementById('delete' + suffix).addEventListener('click', () => {
     deleteItemClicked(scriptNumber);
   });
@@ -73,28 +77,17 @@ const runItemClicked = (scriptNumber) => {
   runScript(scriptNumber);
 };
 
-const editItemClicked = (scriptNumber) => {
-  const button = document.getElementById('edit-button-' + scriptNumber);
+const itemEdited = (scriptNumber) => {
   const title = document.getElementById('script-' + scriptNumber + '-title');
-  const script = document.getElementById('script-' + scriptNumber + '-command');
+  const cmd = document.getElementById('script-' + scriptNumber + '-command');
 
-  if (button.innerText === 'Edit') {
-    button.innerText = 'Save';
-    title.readOnly = false;
-    script.readOnly = false;
-  } else {
-    if (!title.value || !script.value) {
-      displayAddError(errorMessages.emptyValueError);
-      return;
-    }
-    button.innerText = 'Edit';
-    scripts[scriptNumber].title = title.value;
-    scripts[scriptNumber].script = script.value;
-    scriptStore.set('scripts', scripts);
-
-    title.readOnly = true;
-    script.readOnly = true;
+  if (!title.value || !cmd.value) {
+    displayAddError(errorMessages.emptyValueError);
+    return;
   }
+  scripts[scriptNumber].title = title.value;
+  scripts[scriptNumber].script = cmd.value;
+  scriptStore.set('scripts', scripts);
 };
 
 const deleteItemClicked = (scriptNumber) => {
@@ -115,21 +108,18 @@ const deleteItemClicked = (scriptNumber) => {
 
     const header = document.getElementById(prefix + 'header');
     header.id = 'script-' + i + '-header';
-    header.innerHTML = 'Script ' + (i + 1);
+    header.innerHTML = (i + 1) + '. ';
 
     const title = document.getElementById(prefix + 'title');
     title.id = 'script-' + i + '-title';
-    // title.value = scripts[i].title;
 
     const command = document.getElementById(prefix + 'command');
     command.id = 'script-' + i + '-command';
-    // command.value = scripts[i].script;
 
     document.getElementById('script-' + (scriptNumber + 1) + '-buttons').id =
       'script-' + scriptNumber + '-buttons';
 
     document.getElementById('run' + suffix).id = 'run-button-' + i;
-    document.getElementById('edit' + suffix).id = 'edit-button-' + i;
     document.getElementById('delete' + suffix).id = 'delete-button-' + i;
 
     const container = document.getElementById('script-container-' + (i + 1));
