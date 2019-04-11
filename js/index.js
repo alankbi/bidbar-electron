@@ -175,9 +175,9 @@ const onAddScript = () => {
 };
 
 const displayAddError = (errorMessage) => {
-  const errorElement = document.getElementById('add-script-error');
+  const errorElement = document.getElementById('error');
   errorElement.innerHTML = errorMessage;
-  errorElement.style.display = 'initial';
+  errorElement.style.display = 'block';
   setTimeout(() => {
     errorElement.style.display = 'none';
   }, 5000);
