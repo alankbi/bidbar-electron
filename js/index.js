@@ -28,25 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
 const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
   scriptItem.innerHTML =
-    `<div class="script-container" id="script-container-${scriptNumber}">
-      <h3 id="script-${scriptNumber}-header" class="script-header">
-        Script ${scriptNumber + 1}</h3>
+    `<div class="script-container row" id="script-container-${scriptNumber}">
+      <div class="left">
+        <h3 id="script-${scriptNumber}-header" class="script-header">
+          ${scriptNumber + 1}. </h3>
 
-      <input type="text" id="script-${scriptNumber}-title" class="script-title"
-        value="${scripts[scriptNumber].title}" readonly>
-      
-      <textarea id="script-${scriptNumber}-command" class="script-command"
-        readonly>${scripts[scriptNumber].script}</textarea><br>
+        <input type="text" id="script-${scriptNumber}-title"
+          class="script-title"value="${scripts[scriptNumber].title}" readonly>
+        
+        <textarea id="script-${scriptNumber}-command" class="script-command"
+          readonly>${scripts[scriptNumber].script}</textarea><br>
+      </div>
 
-      <div class="script-buttons" id="script-${scriptNumber}-buttons">
-        <button class="run-script-button button"
-          id="run-button-${scriptNumber}">Run</button>
+      <div class="script-buttons right" id="script-${scriptNumber}-buttons">
+        <button class="run-script-button script-button"
+          id="run-button-${scriptNumber}">Run</button><br>
 
-        <button class="edit-script-button button"
-          id="edit-button-${scriptNumber}">Edit</button>
+        <!--<button class="edit-script-button script-button"
+          id="edit-button-${scriptNumber}">Edit</button><br>-->
 
-        <button class="delete-script-button button"
-          id="delete-button-${scriptNumber}">Delete</button>
+        <button class="delete-script-button script-button"
+          id="delete-button-${scriptNumber}">Delete</button><br>
       </div>
     </div>`;
 
@@ -59,9 +61,9 @@ const attachScriptsToItem = (scriptNumber) => {
   document.getElementById('run' + suffix).addEventListener('click', () => {
     runItemClicked(scriptNumber);
   });
-  document.getElementById('edit' + suffix).addEventListener('click', () => {
-    editItemClicked(scriptNumber);
-  });
+  // document.getElementById('edit' + suffix).addEventListener('click', () => {
+  //   editItemClicked(scriptNumber);
+  // });
   document.getElementById('delete' + suffix).addEventListener('click', () => {
     deleteItemClicked(scriptNumber);
   });
