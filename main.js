@@ -1,6 +1,6 @@
 const {app, BrowserWindow, globalShortcut,
   ipcMain, Tray, nativeImage} = require('electron');
-const {scripts} = require('./js/data.js');
+const {scripts, scriptStore} = require('./js/data.js');
 const path = require('path');
 
 let tray;
@@ -85,6 +85,18 @@ const getWindow = () => {
 
 ipcMain.on('test-notification-clicked', () => {
   window.webContents.send('test-notification-clicked');
+});
+
+ipcMain.on('script-item-added', () => {
+  const index = scriptStore.get('scripts').length - 1;
+  globalShortcut.register('Shift+CommandOrControl+Alt+' + (index + 1), () => {
+    webContents.send('keyboard-shortcut-triggered', {'scriptNumber': index});
+  });
+});
+
+ipcMain.on('script-item-deleted', () => {
+  const index = scriptStore.get('scripts').length;
+  globalShortcut.unregister('Shift+CommandOrControl+Alt+' + (index + 1));
 });
 
 module.exports = {

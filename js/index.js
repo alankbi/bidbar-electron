@@ -1,3 +1,4 @@
+const {ipcRenderer} = require('electron');
 const {defaultText, scripts, scriptStore, scriptLimit} = require('./data.js');
 const {runScript} = require('./scriptHelper.js');
 
@@ -128,6 +129,8 @@ const deleteItemClicked = (scriptNumber) => {
 
     attachScriptsToItem(i);
   }
+
+  ipcRenderer.send('script-item-deleted');
 };
 
 const setItem = (scriptNumber, titleText, scriptText) => {
@@ -165,6 +168,8 @@ const onAddScript = () => {
 
   title.value = '';
   cmd.value = '';
+
+  ipcRenderer.send('script-item-added');
 
   return true;
 };

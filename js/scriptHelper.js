@@ -27,7 +27,7 @@ const runScript = (scriptNumber) => {
     });
     window.loadURL('file://' + path.join(__dirname, '../html/output.html'));
 
-    window.webContents.openDevTools(); // DEBUGGER
+    // window.webContents.openDevTools(); // DEBUGGER
 
     window.webContents.on('did-finish-load', () => {
       window.webContents.send('output-data', {
