@@ -6,11 +6,25 @@
 }
 
 body {
+  text-align: center;
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: Arial, Helvetica, sans-serif;
-  margin-top: 15px;
-  padding: 4px;
+  margin: 0;
+  height: 100vh;
+}
+
+#container {
+  top: 0;
+  /* 100vh - 12vh (footer) = 88vh */
+  height: 85vh;
+  padding: 1vh 10px 2vh 10px;
+  overflow: scroll;
+}
+
+/* Hide vertical scrollbar of #container */
+::-webkit-scrollbar { 
+  display: none; 
 }
 
 /* Fields that users can interact with */
@@ -18,11 +32,13 @@ input[type="text"], textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 0 10px;
 }
 
 textarea {
   width: 100% !important;
+  height: 50px !important;
+  resize: none;
 }
 
 button {
@@ -53,21 +69,21 @@ input[type="text"], textarea, button {
 .script-container {
   border: 1px solid var(--bg-color-2);
   background-color: var(--bg-color);
-  margin-top: 20px;
+  margin-top: 15px;
   border-radius: 5px;
   box-shadow: 1px 1px 4px 4px var(--shadow-color);
 }
 
 .script-title {
   height: 30px;
-  margin-bottom: 5px;
+  margin: 0;
   font-size: large;
   font-weight: bold;
 }
 
 .script-command {
   height: 50%;
-  font-size: medium;
+  font-size: small;
 }
 
 /* Script buttons */
@@ -90,45 +106,33 @@ input[type="text"], textarea, button {
 }
 
 .script-header {
-  margin: 5px 0;
+  margin: 0;
   text-align: left;
   display: inline-block !important;
 }
 
-/* Add buttons */
-.add-script-form {
-  padding: 8px;
-  border: 1px solid var(--bg-color-2);
-  background-color: var(--bg-color);
-  border-radius: 5px;
-  box-shadow: 1px 1px 4px 4px var(--shadow-color);
-}
-
-#script-title {
+/* Footer */
+#footer {
+  position: fixed;
   width: 100%;
-  height: 30px;
+  bottom: -1px;
+  left: 0;
+  height: 12vh;
   border: 1px solid var(--bg-color-2);
-  margin-top: 4px;
-  margin-bottom: 20px;
-  font-size: medium;
-}
-
-#script-command {
-  width: 100% !important;
-  border: 1px solid var(--bg-color-2);
-  margin-top: 4px;
-  margin-bottom: 10px;
 }
 
 #add-script-button {
-  width: 50%;
-  height: 30px;
+  position: fixed;
+  width: 90%;
+  height: 8vh;
+  bottom: 2vh;
+  left: 5%;
   border: 1px solid var(--bg-color-2);
   font-size: medium;
   font-weight: bold;
 }
 
-/* Error display  */
+/* Error display */
 #error {
   margin-top: 0;
   margin-bottom: 15px;

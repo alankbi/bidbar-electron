@@ -18,11 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('add-script-button').addEventListener('click', () => {
-    const success = onAddScript();
-    if (success) {
-      container.appendChild(createScriptItemHTML(scripts.length - 1));
-      attachScriptsToItem(scripts.length - 1);
-    }
+    onAddScript();
   });
 });
 
@@ -34,10 +30,10 @@ const createScriptItemHTML = (scriptNumber) => {
         <h3 id="script-${scriptNumber}-header" class="script-header">
           ${scriptNumber + 1}. </h3>
 
-        <input type="text" id="script-${scriptNumber}-title"
+        <input type="text" id="script-${scriptNumber}-title" placeholder="Title"
           class="script-title"value="${scripts[scriptNumber].title}">
         
-        <textarea id="script-${scriptNumber}-command" 
+        <textarea id="script-${scriptNumber}-command" placeholder="Command"
           class="script-command">${scripts[scriptNumber].script}</textarea><br>
       </div>
 
@@ -64,9 +60,16 @@ const attachScriptsToItem = (scriptNumber) => {
   title.addEventListener('input', () => {
     itemEdited(scriptNumber);
   });
+  title.addEventListener('focusout', () => {
+    itemLosesFocus(scriptNumber);
+  });
+
   const cmd = document.getElementById('script-' + scriptNumber + '-command');
   cmd.addEventListener('input', () => {
     itemEdited(scriptNumber);
+  });
+  cmd.addEventListener('blur', () => {
+    itemLosesFocus(scriptNumber);
   });
 
   document.getElementById('delete' + suffix).addEventListener('click', () => {
@@ -82,13 +85,18 @@ const itemEdited = (scriptNumber) => {
   const title = document.getElementById('script-' + scriptNumber + '-title');
   const cmd = document.getElementById('script-' + scriptNumber + '-command');
 
-  if (!title.value || !cmd.value) {
-    displayAddError(errorMessages.emptyValueError);
-    return;
-  }
   scripts[scriptNumber].title = title.value;
   scripts[scriptNumber].script = cmd.value;
   scriptStore.set('scripts', scripts);
+};
+
+const itemLosesFocus = (scriptNumber) => {
+  const title = document.getElementById('script-' + scriptNumber + '-title');
+  const cmd = document.getElementById('script-' + scriptNumber + '-command');
+
+  if (!title.value && !cmd.value) {
+    deleteItemClicked(scriptNumber);
+  }
 };
 
 const deleteItemClicked = (scriptNumber) => {
@@ -151,27 +159,19 @@ const onAddScript = () => {
     return false;
   }
 
-  const title = document.getElementById('script-title');
-  const cmd = document.getElementById('script-command');
-
-  if (!title.value || !cmd.value) {
-    displayAddError(errorMessages.emptyValueError);
-    return false;
-  }
-
   scripts.push({
-    title: title.value,
-    script: cmd.value,
+    title: '',
+    script: '',
   });
-
   scriptStore.set('scripts', scripts);
 
-  title.value = '';
-  cmd.value = '';
+  const container = document.getElementById('container');
+
+  container.appendChild(createScriptItemHTML(scripts.length - 1));
+  attachScriptsToItem(scripts.length - 1);
+  document.getElementById('script-' + (scripts.length - 1) + '-title').focus();
 
   ipcRenderer.send('script-item-added');
-
-  return true;
 };
 
 const displayAddError = (errorMessage) => {
