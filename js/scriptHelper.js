@@ -14,7 +14,11 @@ const runScript = (scriptNumber) => {
     command = 'echo No script currently assigned';
   }
 
+  const start = new Date();
   exec(command, (err, stdout, stderr) => {
+    let time = (new Date() - start) / 1000; // in seconds
+    time = Math.round(time * 100) / 100; // round to two decimals
+
     window = new remote.BrowserWindow({
       parent: remote.getCurrentWindow(),
       width: 600,
@@ -30,20 +34,24 @@ const runScript = (scriptNumber) => {
 
     // window.webContents.openDevTools(); // DEBUGGER
 
+    const scripts = scriptStore.get('scripts');
+    const text = (scriptNumber + 1) + '. ' + scripts[scriptNumber].title;
+
     window.webContents.on('did-finish-load', () => {
       window.webContents.send('output-data', {
         stdout: stdout,
         err: err ? err.message : err,
+        title: 'Script ' + text,
       });
     });
 
-    createNotification(scriptNumber);
+    createNotification(scriptNumber, text, time, err);
   });
 };
 
-const createNotification = (scriptNumber) => {
-  const n = new Notification('Script ' + (scriptNumber + 1) + ' completed', {
-    body: 'Finished in 1.0 seconds',
+const createNotification = (scriptNumber, text, time, err) => {
+  const n = new Notification(text, {
+    body: (err ? 'Failure' : 'Success') + ' - ' + time + ' seconds',
   });
 
   n.onclick = () => {
