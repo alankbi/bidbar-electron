@@ -20,7 +20,6 @@ const runScript = (scriptNumber) => {
     time = Math.round(time * 100) / 100; // round to two decimals
 
     window = new remote.BrowserWindow({
-      parent: remote.getCurrentWindow(),
       width: 600,
       height: 480,
       show: false,
@@ -45,13 +44,14 @@ const runScript = (scriptNumber) => {
       });
     });
 
-    createNotification(scriptNumber, text, time, err);
+    createNotification(text, time, err);
   });
 };
 
-const createNotification = (scriptNumber, text, time, err) => {
+const createNotification = (text, time, err) => {
   const n = new Notification(text, {
     body: (err ? 'Failure' : 'Success') + ' - ' + time + ' seconds',
+    icon: path.join(__dirname, '../assets/' + (err ? 'n_f' : 'n_s') + '.png'),
   });
 
   n.onclick = () => {

@@ -24,6 +24,7 @@ const initializeDisplays = () => {
     webPreferences: {
       nodeIntegration: true,
     },
+    icon: path.join(__dirname, './assets/icons/png/64x64.png'),
   });
   window.loadURL('file://' + path.join(__dirname, 'html/index.html'));
   webContents = window.webContents;
