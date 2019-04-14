@@ -16,8 +16,8 @@ const runScript = (scriptNumber) => {
   exec(command, (err, stdout, stderr) => {
     window = new remote.BrowserWindow({
       parent: remote.getCurrentWindow(),
-      width: 500,
-      height: 400,
+      width: 600,
+      height: 480,
       show: false,
       center: true,
       resizable: true,
