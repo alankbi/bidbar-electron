@@ -1,17 +1,16 @@
 :root {
-  --bg-color: #2a2a72;
-  --bg-image: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);
+  --bg-color: #fafafa;
   --border-color: #ddd;
   --text-color: #333;
-  --shadow-color: rgba(0, 0, 0, 0.1);
   --item-color: #fff;
-  --add-script-color: #009ffd;
+  --add-script-color: rgb(18, 116, 237);
+  --add-script-color-2: rgb(73, 146, 240);
+  --box-shadow: 0 8px 24px rgba(40, 50, 60, 0.18);
 }
 
 body {
   text-align: center;
   background-color: var(--bg-color);
-  background-image: var(--bg-image);
   color: var(--text-color);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -21,8 +20,8 @@ body {
 #container {
   top: 0;
   /* 100vh - 12vh (footer) = 88vh */
-  height: 85vh;
-  padding: 1vh 10px 2vh 10px;
+  height: 79vh;
+  padding: 1vh 10px 8vh 10px;
   overflow: scroll;
 }
 
@@ -46,7 +45,7 @@ textarea {
 }
 
 button {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 input[type="text"], textarea, button {
@@ -74,7 +73,7 @@ input[type="text"], textarea, button {
   background-color: var(--bg-color);
   margin-top: 15px;
   border-radius: 5px;
-  box-shadow: 1px 1px 4px 4px var(--shadow-color);
+  box-shadow: var(--box-shadow);
   background-color: var(--item-color);
 }
 
@@ -99,7 +98,7 @@ input[type="text"], textarea, button {
 }
 
 .script-button:hover {
-  background-color: var(--border-color);
+  background-color: #fafafa;
 }
 
 .run-script-button {
@@ -130,7 +129,7 @@ input[type="text"], textarea, button {
   bottom: -1px; /* Weird off-by-one error */
   left: -1px;
   height: 12vh;
-  border: 1px solid var(--shadow-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #add-script-button {
@@ -141,12 +140,15 @@ input[type="text"], textarea, button {
   left: 5%;
   font-size: medium;
   font-weight: bold;
-  background-color: #FB8C00;
-  box-shadow: 1px 1px 4px 4px var(--shadow-color);
+  color: white;
+  background-color: var(--add-script-color);
+  background: linear-gradient(65deg, var(--add-script-color) 0%, var(--add-script-color-2) 100%);
+  box-shadow: var(--box-shadow);
+  font-weight: 320;
 }
 
 #add-script-button:hover {
-  opacity: 0.7;
+  box-shadow: 0 8px 24px rgba(32,43,54,0.25)
 }
 
 /* Error display */
