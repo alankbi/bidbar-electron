@@ -1,5 +1,5 @@
 const {app, BrowserWindow, globalShortcut,
-  ipcMain, Tray, nativeImage} = require('electron');
+  ipcMain, Tray, nativeImage, Menu} = require('electron');
 const {scriptStore} = require('./js/data.js');
 const path = require('path');
 
@@ -10,7 +10,7 @@ let webContents;
 app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
-
+  createMenu();
   // window.webContents.openDevTools(); // DEBUGGER
 });
 
@@ -29,7 +29,8 @@ const initializeDisplays = () => {
   window.loadURL('file://' + path.join(__dirname, 'html/index.html'));
   webContents = window.webContents;
 
-  const icon = nativeImage.createFromPath('./assets/logo.png');
+  const logoPath = path.join(__dirname, './assets/logo.png');
+  const icon = nativeImage.createFromPath(logoPath);
   tray = new Tray(icon);
 
   tray.on('click', (event) => {
@@ -69,6 +70,70 @@ const showWindow = () => {
   window.setPosition(x, y, false);
   window.show();
   window.focus();
+};
+
+const createMenu = () => {
+  const application = {
+    label: 'Application',
+    submenu: [
+      {
+        label: 'About Application',
+        role: 'about',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: () => {
+          app.quit();
+        },
+      },
+    ],
+  };
+
+  const edit = {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Undo',
+        accelerator: 'CmdOrCtrl+Z',
+        role: 'undo',
+      },
+      {
+        label: 'Redo',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        role: 'redo',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        role: 'cut',
+      },
+      {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        role: 'copy',
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        role: 'paste',
+      },
+      {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectAll',
+      },
+    ],
+  };
+
+  const template = [application, edit];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
 ipcMain.on('show-window', () => {
