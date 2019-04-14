@@ -30,11 +30,8 @@ const scriptStore = new Store({
   name: 'scripts',
 });
 
-const scripts = scriptStore.get('scripts');
-
 module.exports = {
   defaultText: defaultText,
   scriptStore: scriptStore,
-  scripts: scripts,
   scriptLimit: scriptLimit,
 };

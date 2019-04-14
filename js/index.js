@@ -1,5 +1,5 @@
 const {ipcRenderer} = require('electron');
-const {defaultText, scripts, scriptStore, scriptLimit} = require('./data.js');
+const {defaultText, scriptStore, scriptLimit} = require('./data.js');
 const {runScript} = require('./scriptHelper.js');
 
 const errorMessages = {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
 
   // Add script items to page
-  for (let i = 0; i < scripts.length; i++) {
+  for (let i = 0; i < scriptStore.get('scripts').length; i++) {
     container.appendChild(createScriptItemHTML(i));
     attachScriptsToItem(i);
   }
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
+  const scripts = scriptStore.get('scripts');
   scriptItem.innerHTML =
     `<div class="script-container row" id="script-container-${scriptNumber}">
       <div class="left">
@@ -31,7 +32,7 @@ const createScriptItemHTML = (scriptNumber) => {
           ${scriptNumber + 1}. </h3>
 
         <input type="text" id="script-${scriptNumber}-title" placeholder="Title"
-          class="script-title"value="${scripts[scriptNumber].title}">
+          class="script-title" value="${scripts[scriptNumber].title}">
         
         <textarea id="script-${scriptNumber}-command" placeholder="Command"
           class="script-command">${scripts[scriptNumber].script}</textarea><br>
@@ -85,6 +86,7 @@ const itemEdited = (scriptNumber) => {
   const title = document.getElementById('script-' + scriptNumber + '-title');
   const cmd = document.getElementById('script-' + scriptNumber + '-command');
 
+  const scripts = scriptStore.get('scripts');
   scripts[scriptNumber].title = title.value;
   scripts[scriptNumber].script = cmd.value;
   scriptStore.set('scripts', scripts);
@@ -100,6 +102,7 @@ const itemLosesFocus = (scriptNumber) => {
 };
 
 const deleteItemClicked = (scriptNumber) => {
+  const scripts = scriptStore.get('scripts');
   if (scripts.length === 1) {
     setItem(scriptNumber, defaultText, 'echo ' + defaultText);
     return;
@@ -111,7 +114,7 @@ const deleteItemClicked = (scriptNumber) => {
   first.parentNode.removeChild(first);
 
   // Fix the script numbers that are shifted due to the removal
-  for (let i = scriptNumber; i < scripts.length; i++) {
+  for (let i = scriptNumber; i < scriptStore.get('scripts').length; i++) {
     const prefix = 'script-' + (i + 1) + '-';
     const suffix = '-button-' + (i + 1);
 
@@ -125,8 +128,8 @@ const deleteItemClicked = (scriptNumber) => {
     const command = document.getElementById(prefix + 'command');
     command.id = 'script-' + i + '-command';
 
-    document.getElementById('script-' + (scriptNumber + 1) + '-buttons').id =
-      'script-' + scriptNumber + '-buttons';
+    document.getElementById('script-' + (i + 1) + '-buttons').id =
+      'script-' + i + '-buttons';
 
     document.getElementById('run' + suffix).id = 'run-button-' + i;
     document.getElementById('delete' + suffix).id = 'delete-button-' + i;
@@ -138,6 +141,13 @@ const deleteItemClicked = (scriptNumber) => {
     attachScriptsToItem(i);
   }
 
+  for (let i = scriptNumber; i < scriptStore.get('scripts').length; i++) {
+    const command = document.getElementById('script-' + i + '-command');
+    const title = document.getElementById('script-' + i + '-title');
+    title.value = scriptStore.get('scripts')[i].title;
+    command.value = scriptStore.get('scripts')[i].script;
+  }
+
   ipcRenderer.send('script-item-deleted');
 };
 
@@ -147,6 +157,8 @@ const setItem = (scriptNumber, titleText, scriptText) => {
 
   title.value = titleText;
   script.value = scriptText;
+
+  const scripts = scriptStore.get('scripts');
   scripts[scriptNumber].title = titleText;
   scripts[scriptNumber].script = scriptText;
   scriptStore.set('scripts', scripts);
@@ -154,6 +166,7 @@ const setItem = (scriptNumber, titleText, scriptText) => {
 
 // Returns whether a new script item was successfully created
 const onAddScript = () => {
+  const scripts = scriptStore.get('scripts');
   if (scripts.length >= scriptLimit) {
     displayAddError(errorMessages.scriptLimitError);
     return false;

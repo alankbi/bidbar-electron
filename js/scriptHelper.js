@@ -1,12 +1,13 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
-const {scripts} = require('./data.js');
+const {scriptStore} = require('./data.js');
 
 let window;
 
 const runScript = (scriptNumber) => {
   let command;
+  const scripts = scriptStore.get('scripts');
   if (scriptNumber >= 0 && scriptNumber < scripts.length) {
     command = scripts[scriptNumber].script;
   } else {
