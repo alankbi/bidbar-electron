@@ -1,9 +1,12 @@
 const {ipcRenderer, remote} = require('electron');
 const {exec} = require('child_process');
 const path = require('path');
+const fixPath = require('fix-path');
 const {scriptStore} = require('./data.js');
 
 let window;
+
+fixPath(); // to allow commands to work in a macOS packaged app
 
 const runScript = (scriptNumber) => {
   let command;
