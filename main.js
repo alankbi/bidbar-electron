@@ -84,6 +84,18 @@ const createMenu = () => {
         type: 'separator',
       },
       {
+        label: 'Close Window',
+        accelerator: 'CmdOrCtrl+W',
+        click: () => {
+          const currentWindow = BrowserWindow.getFocusedWindow();
+          if (!currentWindow || currentWindow == window) {
+            app.quit();
+          } else {
+            currentWindow.close();
+          }
+        },
+      },
+      {
         label: 'Quit',
         accelerator: 'Command+Q',
         click: () => {

@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "electron-mocha test/**/*.test.js"
+    "test": "electron-mocha test/**/*.test.js",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds"
   },
   "author": "Alan Bi"
 }
