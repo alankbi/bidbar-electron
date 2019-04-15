@@ -11,4 +11,9 @@ ipcRenderer.on('output-data', (event, data) => {
     document.getElementById('err').innerText = data.err;
     document.getElementById('err-header').style.display = 'initial';
   }
+
+  if (!data.stdout && !data.err) {
+    document.getElementById('stdout').innerText = 'No output produced.';
+    document.getElementById('stdout-header').style.display = 'initial';
+  }
 });
