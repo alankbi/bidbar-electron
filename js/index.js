@@ -26,7 +26,7 @@ const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
   const scripts = scriptStore.get('scripts');
   scriptItem.innerHTML =
-    `<div class="row">
+    `<div class="row" id="row-${scriptNumber}">
     <div class="script-container row l1" id="script-container-${scriptNumber}">
       <div class="left">
         <h3 id="script-${scriptNumber}-header" class="script-header">
@@ -135,6 +135,8 @@ const deleteItemClicked = (scriptNumber) => {
   last.parentNode.removeChild(last);
   const lastArrows = document.getElementById('arrow-buttons-' + scripts.length);
   lastArrows.parentNode.removeChild(lastArrows);
+  const lastRow = document.getElementById('row-' + scripts.length);
+  lastRow.parentNode.removeChild(lastRow);
 
   for (let i = scriptNumber; i < scriptStore.get('scripts').length; i++) {
     const command = document.getElementById('script-' + i + '-command');
