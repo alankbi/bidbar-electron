@@ -131,36 +131,10 @@ const deleteItemClicked = (scriptNumber) => {
   scripts.splice(scriptNumber, 1);
   scriptStore.set('scripts', scripts);
 
-  const first = document.getElementById('script-container-' + scriptNumber);
-  first.parentNode.removeChild(first);
-
-  // Fix the script numbers that are shifted due to the removal
-  for (let i = scriptNumber; i < scriptStore.get('scripts').length; i++) {
-    const prefix = 'script-' + (i + 1) + '-';
-    const suffix = '-button-' + (i + 1);
-
-    const header = document.getElementById(prefix + 'header');
-    header.id = 'script-' + i + '-header';
-    header.innerHTML = (i + 1) + '. ';
-
-    const title = document.getElementById(prefix + 'title');
-    title.id = 'script-' + i + '-title';
-
-    const command = document.getElementById(prefix + 'command');
-    command.id = 'script-' + i + '-command';
-
-    document.getElementById('script-' + (i + 1) + '-buttons').id =
-      'script-' + i + '-buttons';
-
-    document.getElementById('run' + suffix).id = 'run-button-' + i;
-    document.getElementById('delete' + suffix).id = 'delete-button-' + i;
-
-    const container = document.getElementById('script-container-' + (i + 1));
-    container.id = 'script-container-' + i;
-    container.outerHTML = container.outerHTML; // Clear old event listeners
-
-    attachScriptsToItem(i);
-  }
+  const last = document.getElementById('script-container-' + scripts.length);
+  last.parentNode.removeChild(last);
+  const lastArrows = document.getElementById('arrow-buttons-' + scripts.length);
+  lastArrows.parentNode.removeChild(lastArrows);
 
   for (let i = scriptNumber; i < scriptStore.get('scripts').length; i++) {
     const command = document.getElementById('script-' + i + '-command');
