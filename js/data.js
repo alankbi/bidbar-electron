@@ -1,5 +1,5 @@
 const Store = require('electron-store');
-const defaultText = 'Edit this script or add a new one below!';
+const defaultText = 'Add a script';
 
 const scriptLimit = 5; // TODO: store paid status and make this infinity if paid
 

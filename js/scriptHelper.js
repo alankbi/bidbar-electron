@@ -17,6 +17,8 @@ const runScript = (scriptNumber) => {
     command = 'echo No script currently assigned';
   }
 
+  command = 'cd && cd\n' + command; // Prevent from accessing Bidbar's files
+
   const start = new Date();
   exec(command, (err, stdout, stderr) => {
     let time = (new Date() - start) / 1000; // in seconds

@@ -75,9 +75,11 @@ input[type="text"], textarea, button {
   border-radius: 5px;
   box-shadow: var(--box-shadow);
   background-color: var(--item-color);
+  width: 90%;
 }
 
 .script-title {
+  width: 90%;
   height: 30px;
   margin: 0;
   font-size: large;
@@ -155,4 +157,23 @@ input[type="text"], textarea, button {
 #error {
   margin-top: 0;
   margin-bottom: 15px;
+}
+
+/* Container and reorder arrows display */
+.l1 {
+  flex: 95%;
+}
+
+.r1 {
+  flex: 5%;
+  margin-right: -8px;
+}
+
+.arrow-button {
+  background-color: transparent;
+}
+
+.up {
+  margin-top: 37px;
+  margin-bottom: 10px;
 }

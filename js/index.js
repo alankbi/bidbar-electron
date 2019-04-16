@@ -26,7 +26,8 @@ const createScriptItemHTML = (scriptNumber) => {
   let scriptItem = document.createElement('div');
   const scripts = scriptStore.get('scripts');
   scriptItem.innerHTML =
-    `<div class="script-container row" id="script-container-${scriptNumber}">
+    `<div class="row">
+    <div class="script-container row l1" id="script-container-${scriptNumber}">
       <div class="left">
         <h3 id="script-${scriptNumber}-header" class="script-header">
           ${scriptNumber + 1}. </h3>
@@ -45,6 +46,16 @@ const createScriptItemHTML = (scriptNumber) => {
         <button class="delete-script-button script-button"
           id="delete-button-${scriptNumber}">Delete</button><br>
       </div>
+    </div>
+
+    <div class="arrow-buttons r1" id="arrow-buttons-${scriptNumber}">
+      <button class="arrow-button up" id="arrow-up-button-${scriptNumber}">
+        <img src="../assets/arrow_up.svg" alt="Up">
+      </button>
+      <button class="arrow-button" id="arrow-down-button-${scriptNumber}">
+        <img src="../assets/arrow_down.svg" alt="Up">
+      </button>
+    </div>
     </div>`;
 
   scriptItem = scriptItem.firstChild;
@@ -75,6 +86,16 @@ const attachScriptsToItem = (scriptNumber) => {
 
   document.getElementById('delete' + suffix).addEventListener('click', () => {
     deleteItemClicked(scriptNumber);
+  });
+
+  const up = document.getElementById('arrow-up-button-' + scriptNumber);
+  up.addEventListener('click', () => {
+    swapItems(scriptNumber - 1, scriptNumber);
+  });
+
+  const down = document.getElementById('arrow-down-button-' + scriptNumber);
+  down.addEventListener('click', () => {
+    swapItems(scriptNumber, scriptNumber + 1);
   });
 };
 
@@ -149,6 +170,26 @@ const deleteItemClicked = (scriptNumber) => {
   }
 
   ipcRenderer.send('script-item-deleted');
+};
+
+const swapItems = (first, second) => {
+  const scripts = scriptStore.get('scripts');
+  if (first < 0 || second >= scripts.length) {
+    return;
+  }
+
+  [scripts[first], scripts[second]] = [scripts[second], scripts[first]];
+  scriptStore.set('scripts', scripts);
+
+  let title = document.getElementById('script-' + first + '-title');
+  let script = document.getElementById('script-' + first + '-command');
+  title.value = scripts[first].title;
+  script.value = scripts[first].script;
+
+  title = document.getElementById('script-' + second + '-title');
+  script = document.getElementById('script-' + second + '-command');
+  title.value = scripts[second].title;
+  script.value = scripts[second].script;
 };
 
 const setItem = (scriptNumber, titleText, scriptText) => {
