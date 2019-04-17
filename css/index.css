@@ -158,8 +158,21 @@ input[type="text"], textarea, button {
 
 /* Error display */
 #error {
-  margin-top: 0;
-  margin-bottom: 15px;
+  margin: 0;
+  padding: 0 12px 4px 12px;
+  position: fixed;
+  height: 80px;
+  top: -85px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  transition: top 0.5s;
+}
+
+#error-close {
+  color: #888;
 }
 
 /* Container and reorder arrows display */

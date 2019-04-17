@@ -8,6 +8,8 @@ const errorMessages = {
     'upgrade to the pro version ($5) to gain unlimited scripts.',
 };
 
+let errorStartTime;
+
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
 
@@ -19,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-script-button').addEventListener('click', () => {
     onAddScript();
+  });
+
+  document.getElementById('error-close').addEventListener('click', () => {
+    hideError(true);
   });
 });
 
@@ -205,10 +211,20 @@ const onAddScript = () => {
 };
 
 const displayAddError = (errorMessage) => {
+  document.getElementById('error-text').innerHTML = errorMessage;
+
   const errorElement = document.getElementById('error');
-  errorElement.innerHTML = errorMessage;
-  errorElement.style.display = 'block';
+  errorElement.style.top = '0px';
+
+  errorStartTime = new Date();
   setTimeout(() => {
-    errorElement.style.display = 'none';
+    hideError(false);
   }, 5000);
+};
+
+const hideError = (closeButtonClicked) => {
+  const errorElement = document.getElementById('error');
+  if (closeButtonClicked || (new Date() - errorStartTime) / 1000 >= 4) {
+    errorElement.style.top = '-' + errorElement.offsetHeight + 'px';
+  }
 };
