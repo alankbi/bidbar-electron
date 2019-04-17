@@ -79,10 +79,11 @@ input[type="text"], textarea, button {
 }
 
 .script-title {
-  width: 90%;
+  width: 85%;
   height: 30px;
   margin: 0;
   padding-left: 2px !important;
+  padding-right: 0 !important;
   font-size: large;
   font-weight: bold;
   background-color: transparent;

@@ -12,7 +12,7 @@ app.on('ready', () => {
   initializeDisplays();
   registerShortcuts();
   createMenu();
-  // window.webContents.openDevTools(); // DEBUGGER
+  window.webContents.openDevTools(); // DEBUGGER
 });
 
 const initializeDisplays = () => {

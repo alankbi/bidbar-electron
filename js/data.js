@@ -1,7 +1,7 @@
 const Store = require('electron-store');
 const defaultText = 'Add a script';
 
-const scriptLimit = 99; // TODO: store paid status & make this infinite if paid
+const scriptLimit = 99; // TODO: store paid status and make this 99 if paid
 
 const schema = {
   scripts: {
