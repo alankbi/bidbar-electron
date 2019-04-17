@@ -40,8 +40,10 @@ const initializeDisplays = () => {
 };
 
 const registerShortcuts = () => {
-  for (let i = 0; i < scriptStore.get('scripts').length; i++) {
-    globalShortcut.register('Shift+CommandOrControl+Alt+' + (i + 1), () => {
+  const maxKey = Math.max(scriptStore.get('scripts').length, 10);
+  for (let i = 0; i < maxKey; i++) {
+    const key = (i + 1) % 10;
+    globalShortcut.register('Shift+CommandOrControl+Alt+' + key, () => {
       webContents.send('keyboard-shortcut-triggered', {'scriptNumber': i});
     });
   }
@@ -180,14 +182,23 @@ ipcMain.on('test-notification-clicked', () => {
 
 ipcMain.on('script-item-added', () => {
   const index = scriptStore.get('scripts').length - 1;
-  globalShortcut.register('Shift+CommandOrControl+Alt+' + (index + 1), () => {
+  if (index >= 10) {
+    return;
+  }
+
+  const key = (index + 1) % 10;
+  globalShortcut.register('Shift+CommandOrControl+Alt+' + key, () => {
     webContents.send('keyboard-shortcut-triggered', {'scriptNumber': index});
   });
 });
 
 ipcMain.on('script-item-deleted', () => {
   const index = scriptStore.get('scripts').length;
-  globalShortcut.unregister('Shift+CommandOrControl+Alt+' + (index + 1));
+  if (index >= 10) {
+    return;
+  }
+
+  globalShortcut.unregister('Shift+CommandOrControl+Alt+' + (index + 1) % 10);
 });
 
 module.exports = {

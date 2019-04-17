@@ -4,8 +4,8 @@ const {runScript} = require('./scriptHelper.js');
 
 const errorMessages = {
   emptyValueError: 'Please enter a value for the script title and command.',
-  scriptLimitError: 'You have reached your limit of 5 scripts. Please ' +
-    'upgrade to the pro version ($5) to gain unlimited scripts.',
+  scriptLimitError: 'You have reached the free tier script limit. Please ' +
+    'upgrade to the pro version ($5 once) to gain unlimited scripts.',
 };
 
 let errorStartTime;
