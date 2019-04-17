@@ -6,6 +6,7 @@ const path = require('path');
 let tray;
 let window;
 let webContents;
+let settings;
 
 app.on('ready', () => {
   initializeDisplays();
@@ -77,8 +78,20 @@ const createMenu = () => {
     label: 'Application',
     submenu: [
       {
-        label: 'About Application',
-        role: 'about',
+        label: 'About Bidbar',
+        click: () => {
+          settings = new BrowserWindow({
+            width: 550,
+            height: 650,
+            center: true,
+            resizable: true,
+            webPreferences: {
+              nodeIntegration: true,
+            },
+          });
+          settings.loadURL('file://' + path.join(__dirname, 'html/settings.html'));
+          // settings.webContents.openDevTools(); // DEBUGGER
+        },
       },
       {
         type: 'separator',
