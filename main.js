@@ -30,6 +30,10 @@ const initializeDisplays = () => {
   window.loadURL('file://' + path.join(__dirname, 'html/index.html'));
   webContents = window.webContents;
 
+  window.on('blur', () => {
+    window.hide();
+  });
+
   const logoPath = path.join(__dirname, './assets/logo.png');
   const icon = nativeImage.createFromPath(logoPath);
   tray = new Tray(icon);
@@ -72,7 +76,11 @@ const showWindow = () => {
 
   window.setPosition(x, y, false);
   window.show();
+
+  // Open window on current desktop
+  window.setVisibleOnAllWorkspaces(true);
   window.focus();
+  window.setVisibleOnAllWorkspaces(false);
 };
 
 const createMenu = () => {
