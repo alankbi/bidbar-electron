@@ -1,4 +1,3 @@
 # Bidbar
------------
 
-A menu bar app that allows you to run custom scripts with just a few clicks.
+This project is no longer being built with Electron or targeting Windows and Linux. See [Bidbar](https://github.com/alankbi/bidbar) for the up-to-date repository, which is being built with Swift to target macOS specifically. 
